@@ -30,6 +30,7 @@
 		{ "id": "lilygo-t-lora-pager", "name": "Lilygo T-LoRa Pager", "family": "ESP32-S3" }
 	],
 	"Elecrow": [
+		{ "id": "elecrow-advance-35-s3", "name": "elecrow-advance-35-s3", "family": "ESP32-S3" },
 		{ "id": "elecrow-35Bv2_2", "name": "elecrow-35Bv2_2", "family": "ESP32" },
 		{ "id": "elecrow-35B", "name": "elecrow-35B", "family": "ESP32" },
 		{ "id": "elecrow-28B", "name": "elecrow-28B", "family": "ESP32" },
