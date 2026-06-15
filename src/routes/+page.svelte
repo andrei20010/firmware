@@ -137,7 +137,7 @@
 			<News title="Bruce RF Reaper">
 				<p class="mb-4 text-[1.2rem]">Open Source Bruce PCB, fully compatible with Bruce</p>
 				<Btn href="https://bruce.computer/boards">Download</Btn>
-				<Btn href="https://bruce-devices.myshopify.com/" outline className="max-sm:mt-2">Buy</Btn>
+				<Btn href="https://www.awin1.com/cread.php?awinmid=82721&awinaffid=2875315&ued=https%3A%2F%2Fwww.elecrow.com/bruce-pcb-rf-reaper.html" outline className="max-sm:mt-2">Buy</Btn>
 			</News>
 		</div>
 	</div>

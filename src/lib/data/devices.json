@@ -302,6 +302,24 @@
 		"Battery": "None",
 		"Flash": "16MB",
 		"PSRAM": "8MB"
+	},
+	{
+		"device": "Elecrow Advance-35-s3",
+		"CC1101": "Module Required",
+		"NRF24": "Module Required",
+		"FMRadio": "Module Required",
+		"NFC": "Module Required",
+		"Mic": false,
+		"BadUSB": true,
+		"RGB_Led": true,
+		"Audio": "Tone",
+		"Screen": "320x240",
+		"ESP": "ESP32-S3",
+		"Battery": "None",
+		"Flash": "16MB",
+		"PSRAM": "8MB"
 	}
+
+
 
 ]
