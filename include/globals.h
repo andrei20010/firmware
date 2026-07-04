@@ -115,7 +115,8 @@ struct Option {
             nullptr, // hover lambda returns true if it already handled rendering
         void *ptr = nullptr, bool hvrd = false, bool en = true
     )
-        : label(lbl), operation(op), selected(sel), enabled(en), hover(hov), hoverPointer(ptr), hovered(hvrd) {}
+        : label(lbl), operation(op), selected(sel), enabled(en), hover(hov), hoverPointer(ptr),
+          hovered(hvrd) {}
 };
 
 struct keyStroke { // DO NOT CHANGE IT!!!!!
@@ -147,104 +148,90 @@ struct keyStroke { // DO NOT CHANGE IT!!!!!
         hid_keys.clear();
         modifier_keys.clear();
     }
-};
 
-struct TouchPoint {
-    bool pressed = false;
-    uint16_t x;
-    uint16_t y;
+    extern TouchPoint touchPoint;
+    extern keyStroke KeyStroke;
+    extern std::vector<Option> options;
 
-    // clear touch to better handle tasks
-    void Clear(void) {
-        pressed = false;
-        x = 0;
-        y = 0;
+    template <typename R, typename... Args>
+    std::function<void()> lambdaHelper(R (*callback)(Args...), Args... args) {
+        return [=]() { (void)callback(args...); };
     }
-};
 
-extern TouchPoint touchPoint;
-extern keyStroke KeyStroke;
-extern std::vector<Option> options;
+    extern String fileToCopy;
 
-template <typename R, typename... Args>
-std::function<void()> lambdaHelper(R (*callback)(Args...), Args... args) {
-    return [=]() { (void)callback(args...); };
-}
+    extern const int bufSize;
 
-extern String fileToCopy;
+    extern bool returnToMenu; // variable to check and break loops to return to main menu
 
-extern const int bufSize;
+    extern String cachedPassword;
 
-extern bool returnToMenu; // variable to check and break loops to return to main menu
+    extern int currentScreenBrightness;
 
-extern String cachedPassword;
+    // Screen sleep control variables
+    extern unsigned long previousMillis;
+    extern bool isSleeping;
+    extern bool isScreenOff;
+    extern bool dimmer;
 
-extern int currentScreenBrightness;
+    extern volatile bool NextPress;
 
-// Screen sleep control variables
-extern unsigned long previousMillis;
-extern bool isSleeping;
-extern bool isScreenOff;
-extern bool dimmer;
+    extern volatile bool PrevPress;
 
-extern volatile bool NextPress;
+    extern volatile bool UpPress;
 
-extern volatile bool PrevPress;
+    extern volatile bool DownPress;
 
-extern volatile bool UpPress;
+    extern volatile bool SelPress;
 
-extern volatile bool DownPress;
+    extern volatile bool EscPress;
 
-extern volatile bool SelPress;
+    extern volatile bool AnyKeyPress;
 
-extern volatile bool EscPress;
+    extern volatile bool NextPagePress;
 
-extern volatile bool AnyKeyPress;
+    extern volatile bool PrevPagePress;
 
-extern volatile bool NextPagePress;
+    extern volatile bool LongPress;
 
-extern volatile bool PrevPagePress;
+    extern volatile bool SerialCmdPress;
 
-extern volatile bool LongPress;
+    extern volatile int forceMenuOption;
 
-extern volatile bool SerialCmdPress;
+    extern volatile uint8_t menuOptionType; // updates when drawing loopoptions, to send to remote controller
 
-extern volatile int forceMenuOption;
-
-extern volatile uint8_t menuOptionType; // updates when drawing loopoptions, to send to remote controller
-
-extern String menuOptionLabel;
+    extern String menuOptionLabel;
 
 #ifdef HAS_ENCODER_LED
-extern volatile int EncoderLedChange;
+    extern volatile int EncoderLedChange;
 #endif
 
-extern TaskHandle_t xHandle;
-extern inline bool check(volatile bool &btn, bool resetButtonStatus = true) {
+    extern TaskHandle_t xHandle;
+    extern inline bool check(volatile bool &btn, bool resetButtonStatus = true) {
 
 #ifndef USE_TFT_eSPI_TOUCH
-    if (!btn) return false;
-    vTaskSuspend(xHandle);
-    if (resetButtonStatus) {
+        if (!btn) return false;
+        vTaskSuspend(xHandle);
+        if (resetButtonStatus) {
+            btn = false;
+            AnyKeyPress = false;
+            SerialCmdPress = false;
+        }
+        delay(10);
+        vTaskResume(xHandle);
+        return true;
+#else
+
+        InputHandler();
+        if (!btn) return false;
         btn = false;
         AnyKeyPress = false;
         SerialCmdPress = false;
-    }
-    delay(10);
-    vTaskResume(xHandle);
-    return true;
-#else
-
-    InputHandler();
-    if (!btn) return false;
-    btn = false;
-    AnyKeyPress = false;
-    SerialCmdPress = false;
-    return true;
+        return true;
 
 #endif
-}
+    }
 
-extern gpio_num_t mic_bclk_pin; // used to configure Cardputer ADV Microphone
+    extern gpio_num_t mic_bclk_pin; // used to configure Cardputer ADV Microphone
 
 #endif

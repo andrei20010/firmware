@@ -81,6 +81,13 @@ void __attribute__((weak)) taskInputHandler(void *parameter) {
 #ifndef USE_TFT_eSPI_TOUCH
             InputHandler();
 #endif
+
+            int16_t tx, ty;
+            if (ft6336_readTouch(&tx, &ty)) {
+                touchPoint.x = (uint16_t)tx;
+                touchPoint.y = (uint16_t)ty;
+                touchPoint.pressed = true;
+            }
             timer = millis();
         }
         vTaskDelay(pdMS_TO_TICKS(10));
